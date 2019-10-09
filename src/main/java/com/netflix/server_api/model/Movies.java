@@ -13,7 +13,7 @@ public class Movies {
 
     @Id
     @GeneratedValue
-    private long id;
+    private long movie_id;
 
     @Column(name = "type")
     @NotNull
@@ -33,11 +33,11 @@ public class Movies {
     }
 
     public long getId() {
-        return id;
+        return movie_id;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setId(long movie_id) {
+        this.movie_id = movie_id;
     }
 
     public String getType() {
@@ -47,5 +47,4 @@ public class Movies {
     public void setType(String type) {
         this.type = type;
     }
-
 }

@@ -13,7 +13,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private long user_id;
 
     public User(@NotNull String user_name) {
         this.user_name = user_name;
@@ -28,11 +28,11 @@ public class User {
     }
 
     public long getId() {
-        return id;
+        return user_id;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setId(long user_id) {
+        this.user_id = user_id;
     }
 
 }
