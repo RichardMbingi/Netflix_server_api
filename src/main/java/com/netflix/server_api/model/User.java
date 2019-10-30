@@ -1,38 +1,74 @@
 package com.netflix.server_api.model;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "User")
-
+@Table(name="users")
 public class User {
-    @Column(name = "user_name")
-    @NotNull
-    private String user_name;
-
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long user_id;
+    @Column(name="id")
+    @GeneratedValue(
+            strategy= GenerationType.AUTO,
+            generator="native"
+    )
+    @GenericGenerator(
+            name = "native",
+            strategy = "native"
+    )
+    @NotNull(groups = Update.class)
+    private Long id;
 
-    public User(@NotNull String user_name) {
-        this.user_name = user_name;
+    @Column(name="name")
+    @NotNull(groups = Create.class)
+    private String name;
+
+    @Column(name="id_number")
+    @NotNull(groups = Create.class)
+    private Integer idNumber;
+
+    public Long getId() {
+        return id;
     }
 
-    public String getUser_name() {
-        return user_name;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public void setUser_name(String user_name) {
-        this.user_name = user_name;
+    public String getName() {
+        return name;
     }
 
-    public long getId() {
-        return user_id;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public void setId(long user_id) {
-        this.user_id = user_id;
+    public Integer getIdNumber() {
+        return idNumber;
     }
 
+    public void setIdNumber(Integer idNumber) {
+        this.idNumber = idNumber;
+    }
+
+    public User(String name, Integer idNumber) {
+        this.name = name;
+        this.idNumber = idNumber;
+    }
+
+    public User(){}
+
+    public interface Create{}
+    public  interface  Update{}
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", idNumber=" + idNumber +
+                '}';
+    }
 }

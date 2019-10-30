@@ -1,50 +1,103 @@
 package com.netflix.server_api.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.Set;
 
 @Entity
-@Table(name = "Movies")
-
+@Table(name = "movies")
 public class Movies {
-    @Column(name = "movie_name")
-    @NotNull
-    private String movie_name;
 
     @Id
-    @GeneratedValue
-    private long movie_id;
+    @GeneratedValue(
+            strategy= GenerationType.AUTO,
+            generator="native"
+    )
+    @GenericGenerator(
+            name = "native",
+            strategy = "native"
+    )
+    @NotNull(groups = Update.class)
+    @Column(name = "id")
+    private Long id;
 
-    @Column(name = "type")
-    @NotNull
-    private String type;
+    @Column(name = "name")
+    @NotNull(groups = Create.class)
+    private String name;
 
-    public Movies(@NotNull String movie_name, @NotNull String type) {
-        this.movie_name = movie_name;
-        this.type = type;
+    @ManyToOne
+    @JsonIgnore
+    @JoinColumn(name="type_id")
+    private Type type;
+
+    @ManyToOne
+    @JsonIgnore
+    @JoinColumn(name="category_id")
+    private MovieClass movieClass;
+
+    @ManyToOne
+    @JsonIgnore
+    @JoinColumn(name="owner_id")
+    private User user;
+
+    @ManyToMany(mappedBy = "movieSet")
+    Set<MovieClass> movieClassSet;
+
+
+    public Long getId() {
+        return id;
     }
 
-    public String getMovie_name() {
-        return movie_name;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public void setMovie_name(String movie_name) {
-        this.movie_name = movie_name;
+    public String getName() {
+        return name;
     }
 
-    public long getId() {
-        return movie_id;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public void setId(long movie_id) {
-        this.movie_id = movie_id;
+    public MovieClass getMovieClass() {
+        return movieClass;
     }
 
-    public String getType() {
+    public void setMovieClass(MovieClass movieClass) {
+        this.movieClass = movieClass;
+    }
+
+    public Type getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(Type type) {
         this.type = type;
     }
+
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Movies(String name, String actor, Type type, MovieClass movieClass, User user) {
+        this.name = name;
+        this.type = type;
+        this.movieClass = movieClass;
+        this.user = user;
+    }
+
+    public Movies(){}
+
+    public interface Create{}
+    public interface  Update{}
+
 }
